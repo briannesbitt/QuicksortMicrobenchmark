@@ -1,0 +1,7 @@
+h1. Quicksort microbenchmark
+
+I wrote a blog post about benchmarking the quicksort sorting algorithm in several languages.
+
+You can read the blog post at "http://nesbot.com/2012/2/8/a-quick-microbenchmark":http://nesbot.com/2012/2/8/a-quick-microbenchmark
+
+The benchmarks are setup to run on my computer (64 bit Win 7) and some commands are specific to my installation so it would have to be tweaked to run anywhere else.

@@ -1,0 +1,126 @@
+<html>
+<head>
+  <title>Quicksort Micro Benchmark</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+Array Length: <input type="text" id="arraylength" name="arraylength" value="1000000" />
+<input type="button" id="runQuicksort" value="Run Quicksort" />
+<input type="button" value="Run JavaScript API sort()" id="runJSApiSort" />
+
+<script type="text/javascript">
+
+showResults = function(txt) {
+   $("#results").append(txt + "<br/>");
+}
+
+quickSort = function() {
+
+  var assert, i, len, min, quicksort, sort, time;
+
+  Array.prototype.swap = function(i, j) {
+    var temp;
+    temp = this[i];
+    this[i] = this[j];
+    return this[j] = temp;
+  };
+
+  quicksort = function(arr, l, r) {
+    var i, j, pivot;
+    if (l == null) l = 0;
+    if (r == null) r = arr.length - 1;
+    pivot = arr[Math.floor((l + r) / 2)];
+    i = l;
+    j = r;
+    while (i <= j) {
+      while (arr[i] < pivot) {
+        i++;
+      }
+      while (arr[j] > pivot) {
+        j--;
+      }
+      if (i <= j) arr.swap(i++, j--);
+    }
+    if (l < j) quicksort(arr, l, j);
+    if (r > i) quicksort(arr, i, r);
+  };
+
+  sort = function(len) {
+    var a, diff, i, start, _ref;
+    a = [];
+    for (i = 0; 0 <= len ? i < len : i > len; 0 <= len ? i++ : i--) {
+      a.push(Math.floor(Math.random() * len));
+      if (i % 2 === 0) a[i] = -a[i];
+    }
+    start = Date.now();
+    quicksort(a);
+    diff = Date.now() - start;
+    for (i = 1, _ref = a.length; 1 <= _ref ? i < _ref : i > _ref; 1 <= _ref ? i++ : i--) {
+      if (a[i - 1] > a[i]) {
+        alert("not sorted!");
+      }
+    }
+    return diff;
+  };
+
+  len = parseInt($("#arraylength").val())
+
+  min = Number.MAX_VALUE;
+
+  for (i = 1; i <= 5; i++) {
+    time = sort(len);
+    if (time < min) min = time;
+  }
+
+  showResults("browser quicksort: " + min + " ms (" + len + ")");
+
+}
+
+jsApiSort = function() {
+  var assert, i, len, min, sort, time;
+
+  sort = function(len) {
+    var a, b, diff, i, start, _ref;
+    a = [];
+    for (i = 0; 0 <= len ? i < len : i > len; 0 <= len ? i++ : i--) {
+      a.push(Math.floor(Math.random() * len));
+      if (i % 2 === 0) a[i] = -a[i];
+    }
+    start = Date.now();
+    b = a.sort(function(a, b) { return a - b; });
+    diff = Date.now() - start;
+    for (i = 1, _ref = b.length; 1 <= _ref ? i < _ref : i > _ref; 1 <= _ref ? i++ : i--) {
+      if (b[i - 1] > b[i]) {
+        alert("not sorted!");
+      }
+    }
+    return diff;
+  };
+
+  len = parseInt($("#arraylength").val())
+
+  if (!len) {
+    showResults("usage: coffee sortapi.coffee ARRAYLENGTH");
+    return;
+  }
+
+  min = Number.MAX_VALUE;
+
+  for (i = 1; i <= 5; i++) {
+    time = sort(len);
+    if (time < min) min = time;
+  }
+
+  showResults("browser js api sort: " + min + " ms (" + len + ")");
+}
+
+$("#runQuicksort").click(quickSort);
+$("#runJSApiSort").click(jsApiSort);
+
+</script>
+
+<div id="results"></div>
+
+</body>
+</html>
